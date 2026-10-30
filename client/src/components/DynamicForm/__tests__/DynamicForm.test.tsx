@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { describe, expect, it } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -26,10 +27,10 @@ describe('DynamicForm', () => {
   it('renders the configured title and fields', () => {
     renderForm();
 
-    expect(screen.getByRole('heading', { name: 'Create User' })).toBeInTheDocument();
-    expect(document.querySelector('input[name="firstName"]')).toBeInTheDocument();
-    expect(document.querySelector('input[name="email"]')).toBeInTheDocument();
-    expect(document.querySelector('input[name="age"]')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Create User' })).toBeTruthy();
+    expect(document.querySelector('input[name="firstName"]')).toBeTruthy();
+    expect(document.querySelector('input[name="email"]')).toBeTruthy();
+    expect(document.querySelector('input[name="age"]')).toBeTruthy();
   });
 
   it('shows required-field validation when submitted empty', async () => {
@@ -37,8 +38,8 @@ describe('DynamicForm', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
-    expect(await screen.findByText('First Name is required')).toBeInTheDocument();
-    expect(screen.getByText('Email is required')).toBeInTheDocument();
+    expect(await screen.findByText('First Name is required')).toBeTruthy();
+    expect(screen.getByText('Email is required')).toBeTruthy();
   });
 
   it('prevents negative and scientific-notation keystrokes in number fields', () => {
