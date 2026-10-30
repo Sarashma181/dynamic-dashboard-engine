@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import MetricCard from '../MetricCard';
@@ -6,8 +7,8 @@ describe('MetricCard', () => {
   it('renders the metric title and value', () => {
     render(<MetricCard title="Total Users" data={{ value: '12,450' }} />);
 
-    expect(screen.getByText('Total Users')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: '12,450' })).toBeInTheDocument();
+    expect(screen.getByText('Total Users')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: '12,450' })).toBeTruthy();
   });
 
   it('renders the optional unit and trend', () => {
@@ -18,14 +19,14 @@ describe('MetricCard', () => {
       />,
     );
 
-    expect(screen.getByText('AED')).toBeInTheDocument();
-    expect(screen.getByText('+8%')).toBeInTheDocument();
+    expect(screen.getByText('AED')).toBeTruthy();
+    expect(screen.getByText('+8%')).toBeTruthy();
   });
 
   it('does not render optional elements when they are not provided', () => {
     render(<MetricCard title="Active Sessions" data={{ value: '3,240' }} />);
 
-    expect(screen.queryByText('AED')).not.toBeInTheDocument();
-    expect(screen.queryByText(/%/)).not.toBeInTheDocument();
+    expect(screen.queryByText('AED')).toBeNull();
+    expect(screen.queryByText(/%/)).toBeNull();
   });
 });
