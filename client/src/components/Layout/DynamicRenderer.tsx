@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import { widgetRegistry } from "../../registry/widgetRegistry";
 import type { WidgetConfig } from "../../types/widget";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
@@ -13,8 +14,7 @@ function DynamicRenderer({
 }: Props) {
 
 
-  const Component =
-    widgetRegistry[widget.type];
+const Component = widgetRegistry[widget.type] as ComponentType<any>;
 
 
 
@@ -42,28 +42,18 @@ function DynamicRenderer({
 
 
   const props = {
+  ...widget,
 
-    ...widget,
+  ...(widget.type === "METRIC_CARD" && {
+    title: widget.title ?? "",
+    data: widget.metricData ?? { value: "0" },
+  }),
 
-
-    // Backend metric card data
-    ...(widget.type === "METRIC_CARD" && {
-
-      data: widget.data
-
-    }),
-
-
-
-    // Backend chart data
-    ...(widget.type === "CHART" && {
-
-      data: widget.data
-
-    })
-
-  };
-
+  ...(widget.type === "CHART" && {
+    title: widget.title ?? "",
+    data: widget.chartData ?? [],
+  }),
+};
 
 
   return (
